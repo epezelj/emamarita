@@ -51,7 +51,7 @@ int main() {
 		}
 		counter++;
 	}
-
+	
 	counter = 0;
 	rewind(filePointer);
 	printf("%-6s %-8s %-8s %s\n", "IME", "PREZIME", "APS.BOD.", "REL.BOD.");
