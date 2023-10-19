@@ -33,13 +33,13 @@ int main() {
 	}
 
 	while (!feof(filePointer)) {
-		fgets(buffer, 1024, filePointer);
+		fgets(buffer, MAX_LINE, filePointer);
 		noRows++;
 
 	}
 
 	rewind(filePointer);
-	pointerStudenti = (_student *)malloc(sizeof(_student));
+	pointerStudenti = (_student *)malloc(sizeof(_student)*noRows);
 
 
 	while(counter!=noRows){
