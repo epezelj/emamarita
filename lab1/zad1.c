@@ -60,6 +60,9 @@ int main() {
 		printf("%-6s %-8s %-8.2lf %.2lf\n", (pointerStudenti+counter)->name, (pointerStudenti+counter)->surname, (pointerStudenti+counter)->points, (pointerStudenti+counter)->points/max_points*100);
 		counter++;
 	}
+
+	fclose(filePointer);
+	
 	return 0;
 
 }

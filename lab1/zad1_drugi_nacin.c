@@ -100,7 +100,7 @@ int main() {
 	Output(pointerStudenti, noRows, max_points);
 
 
-
+	fclose(filePointer);
 	
 	return 0;
 
