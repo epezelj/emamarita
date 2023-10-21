@@ -15,37 +15,102 @@ typedef struct {
 } _student;
 
 
+int numRows();
+int Read_struct( _student *, int);
+double Max( _student *, int);
+int Output(_student *, int, int);
 
-int numRows(FILE *filePointer){
 
+
+int main() {
+
+	
+	char buffer[MAX_LINE] = {0};
+	_student *pointerStudenti = NULL;
+	double max_points = 0;
 	int noRows = 0;
-	char buffer[MAX_LINE];
+
+
+	noRows = numRows();
+	
+	pointerStudenti = (_student *)malloc(sizeof(_student)*noRows);
+
+	Read_struct(pointerStudenti, noRows);
+	max_points = Max(pointerStudenti, noRows);
+	Output(pointerStudenti, noRows, max_points);
+
+	free(pointerStudenti);
+
+	return 0;
+
+}
+
+
+int numRows(){
+
+	FILE *filePointer = NULL;
+	int noRows = 0, counter = 0;
+	char buffer[MAX_LINE] = {0};
+
+	filePointer = fopen("imena.txt", "r");
+	
+
+	if (!filePointer) {
+		printf("file is not openned!\n");
+		return -1;
+	}
 
 	while (!feof(filePointer)) {
 		fgets(buffer, MAX_LINE, filePointer);
 		noRows++;
 
 	}
+	fclose(filePointer);
+
 	return noRows;
 }
 
 
-void Read_struct(FILE *filePointer, _student *pointerStudenti, int noRows){
+int Read_struct( _student *pointerStudenti, int noRows){
 
+	FILE *filePointer = NULL;
 	int counter = 0;
 
+	filePointer = fopen("imena.txt", "r");
+	
+
+	if (!filePointer) {
+		printf("file is not openned!\n");
+		return -1;
+	}
+
 	while(counter!=noRows){
+
 		fscanf(filePointer, "%s %s %lf", (pointerStudenti+counter)->name, (pointerStudenti+counter)->surname, &((pointerStudenti+counter)->points));
 
 		counter++;
 	}
 
+	fclose(filePointer);
+
+	return 0;
+
 }
 
 
-double Max(FILE *filePointer, _student *pointerStudenti, int noRows){
+double Max( _student *pointerStudenti, int noRows){
 
+	FILE *filePointer = NULL;
+	int counter = 0;
 	double max_points = 0;
+
+	filePointer = fopen("imena.txt", "r");
+	
+
+	if (!filePointer) {
+		printf("file is not openned!\n");
+		return -1;
+	}
 
 	for(int counter = 0; counter < noRows; counter++){
 
@@ -56,31 +121,15 @@ double Max(FILE *filePointer, _student *pointerStudenti, int noRows){
 	}
 	return max_points;
 
+	fclose(filePointer);
 
 }
 
-void Output(_student *pointerStudenti, int noRows, int max_points){
 
-	int counter = 0;
+int Output(_student *pointerStudenti, int noRows, int max_points){
 
-	printf("%-6s %-8s %-8s %s\n", "IME", "PREZIME", "APS.BOD.", "REL.BOD.");
-
-	while(counter!=noRows){
-		printf("%-6s %-8s %-8.2lf %.2lf\n", (pointerStudenti+counter)->name, (pointerStudenti+counter)->surname, (pointerStudenti+counter)->points, (pointerStudenti+counter)->points/max_points*100);
-		counter++;
-	}
-	
-}
-
-
-int main() {
-
-	int noRows = 0, counter = 0;
 	FILE *filePointer = NULL;
-	char buffer[MAX_LINE] = {0};
-	_student *pointerStudenti = NULL;
-	double max_points = 0;
-
+	int counter = 0;
 
 	filePointer = fopen("imena.txt", "r");
 	
@@ -90,19 +139,17 @@ int main() {
 		return -1;
 	}
 
-	noRows = numRows(filePointer);
+	printf("%-6s %-8s %-8s %s\n", "IME", "PREZIME", "APS.BOD.", "REL.BOD.");
 
-	rewind(filePointer);
-
-	pointerStudenti = (_student *)malloc(sizeof(_student)*noRows);
-	Read_struct(filePointer, pointerStudenti, noRows);
-	max_points = Max(filePointer, pointerStudenti, noRows);
-	Output(pointerStudenti, noRows, max_points);
-
+	while(counter!=noRows){
+		printf("%-6s %-8s %-8.2lf %.2lf\n", (pointerStudenti+counter)->name, (pointerStudenti+counter)->surname, (pointerStudenti+counter)->points, (pointerStudenti+counter)->points/max_points*100);
+		counter++;
+	}
 
 	fclose(filePointer);
-	
-	return 0;
 
+	return 0;
+	
 }
+
 	
