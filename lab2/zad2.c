@@ -19,14 +19,14 @@ typedef struct pers{
 
 }_person;
 
-int addBefore(Position);
-Position addPers(Position);
-int outputList(Position);
-int addEnd(Position);
-int findEl(Position, char[]);
-int Delete(Position, char[]);
-int chooseFun(Position);
-int outputPers(Position);
+int AddStart(Position);
+Position AddPers(Position);
+int PrintList(Position);
+int AddEnd(Position);
+int FindPer(Position, char[]);
+int DeletePer(Position, char[]);
+int ChooseFun(Position);
+int PrintPers(Position);
 
 
 int main(){
@@ -34,30 +34,29 @@ int main(){
     _person Head = {.name = {0}, .surname = {0}, .birth = 0, .next_pos = 0};
     Head.next_pos = NULL;
 
-    chooseFun(&Head);
+    ChooseFun(&Head);
 
 
 }
 
-int addBefore(Position Head){
+int AddStart(Position Pers){
 
     Position newPers = NULL;
-    newPers = addPers(newPers);
+    newPers = AddPers(newPers);
 
     if(newPers!=NULL){
 
-        newPers->next_pos = Head->next_pos;
-        Head->next_pos = newPers; 
+        newPers->next_pos = Pers->next_pos;
+        Pers->next_pos = newPers; 
 
     }
     return 0;
 
 }
-int addEnd(Position Head){
+int AddEnd(Position Pers){
 
     Position newPers = NULL;
-    Position Pers = Head;
-    newPers = addPers(newPers);
+    newPers = AddPers(newPers);
 
     if(Pers->next_pos!=NULL){
         while(Pers->next_pos !=NULL){
@@ -73,17 +72,17 @@ int addEnd(Position Head){
 
 
 }
-int outputList(Position Pers){
+int PrintList(Position Head){
 
     printf("Osobe su: \n");
 
-    if(Pers->next_pos != NULL){
+    if(Head->next_pos != NULL){
 
-    while(Pers->next_pos != NULL){
+    while(Head->next_pos != NULL){
     
-            Pers = Pers->next_pos;
+            Head = Head->next_pos;
 
-            outputPers(Pers);
+            PrintPers(Head);
 
         }
     }
@@ -93,7 +92,7 @@ int outputList(Position Pers){
 
 }
 
-int findEl(Position Pers, char surname[]){
+int FindPer(Position Pers, char surname[]){
 
     int true_false = 0;
 
@@ -101,7 +100,7 @@ int findEl(Position Pers, char surname[]){
         Pers = Pers->next_pos;
         if(strcmp(Pers->surname, surname) == 0){
             printf("Trazena osoba se nalazi u polju!\n");
-            outputPers(Pers);
+            PrintPers(Pers);
             true_false = 1;
         }
     }
@@ -118,7 +117,7 @@ int findEl(Position Pers, char surname[]){
 
 }
 
-int Delete(Position Pers, char surname[]){
+int DeletePer(Position Pers, char surname[]){
 
     Position temp = NULL;
 
@@ -141,12 +140,12 @@ int Delete(Position Pers, char surname[]){
 
 }
 
-Position addPers(Position newPers){
+Position AddPers(Position newPers){
 
     char name[MAX_LENGTH] = {0}, surname[MAX_LENGTH] = {0};
     int birth = 0;
 
-    newPers = (Position)malloc(sizeof(Position));
+    newPers = (Position)malloc(sizeof(_person));
     
 
     printf("Ime, prezime, godina rodenja: ");
@@ -160,7 +159,7 @@ Position addPers(Position newPers){
 
 }
 
-int chooseFun(Position Head){
+int ChooseFun(Position Head){
 
     char choice;
     char surname[MAX_LENGTH];
@@ -171,15 +170,15 @@ int chooseFun(Position Head){
 
     do{
     if(choice == 'B')
-        addBefore(Head);
+        AddStart(Head);
 
     if(choice == 'E')
-        addEnd(Head);
+        AddEnd(Head);
 
     if(choice == 'O'){
         printf("\n");
         if(Head->next_pos != NULL)
-            outputList(Head);
+            PrintList(Head);
         
         else
             printf("\nNe postoji nijedan element u listi!\n");
@@ -191,7 +190,7 @@ int chooseFun(Position Head){
             printf("\nUnesite prezime osobe koju trazite: ");
             scanf("%s", surname);
             printf("\n");
-            findEl(Head, surname);
+            FindPer(Head, surname);
         }
 
         
@@ -205,7 +204,7 @@ int chooseFun(Position Head){
             printf("\nUnesite prezime osobe koju zelite izbrisati: ");
             scanf("%s", surname);
             printf("\n");
-            Delete(Head, surname);
+            DeletePer(Head, surname);
         }
 
         
@@ -214,7 +213,7 @@ int chooseFun(Position Head){
 
     }
 
-    printf("\nOdabrite: \nB - dodavanje el na poc\nE - dodavanje el na kraj\nO - ispis\nF - pronalazenje el\nD - brisanje el\nP - pronalazenje prethodnika\n");
+    printf("\nOdaberite: \nB - dodavanje el na poc\nE - dodavanje el na kraj\nO - ispis\nF - pronalazenje el\nD - brisanje el\nQ - Prekid odabira\n\n");
     scanf("%*c%c", &choice);
     
     
@@ -223,7 +222,7 @@ int chooseFun(Position Head){
     return 0;
 }
 
-int outputPers(Position Pers){
+int PrintPers(Position Pers){
 
     printf("%s %s %d\n", Pers->name, Pers->surname, Pers->birth);
     
