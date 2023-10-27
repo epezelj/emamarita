@@ -226,6 +226,6 @@ int PrintPers(Position Pers){
 
     printf("%s %s %d\n", Pers->name, Pers->surname, Pers->birth);
     
-    return 0;
+    return 1;
 
 }
