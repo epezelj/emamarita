@@ -104,15 +104,7 @@ double Max( _student *pointerStudenti, int noRows){
 	int counter = 0;
 	double max_points = 0;
 
-	filePointer = fopen("imena.txt", "r");
-	
-
-	if (!filePointer) {
-		printf("file is not openned!\n");
-		return -1;
-	}
-
-	for(int counter = 0; counter < noRows; counter++){
+	for(int counter = 0; counter < noRows-1; counter++){
 
 		if(((pointerStudenti+counter)->points) > max_points){
 			max_points=(pointerStudenti+counter)->points;
@@ -120,8 +112,6 @@ double Max( _student *pointerStudenti, int noRows){
 		}
 	}
 	return max_points;
-
-	fclose(filePointer);
 
 }
 
@@ -131,22 +121,12 @@ int Output(_student *pointerStudenti, int noRows, int max_points){
 	FILE *filePointer = NULL;
 	int counter = 0;
 
-	filePointer = fopen("imena.txt", "r");
-	
-
-	if (!filePointer) {
-		printf("file is not openned!\n");
-		return -1;
-	}
-
 	printf("%-6s %-8s %-8s %s\n", "IME", "PREZIME", "APS.BOD.", "REL.BOD.");
 
-	while(counter!=noRows){
+	while(counter!=(noRows-1)){
 		printf("%-6s %-8s %-8.2lf %.2lf\n", (pointerStudenti+counter)->name, (pointerStudenti+counter)->surname, (pointerStudenti+counter)->points, (pointerStudenti+counter)->points/max_points*100);
 		counter++;
 	}
-
-	fclose(filePointer);
 
 	return 0;
 	
