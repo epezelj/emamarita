@@ -8,18 +8,14 @@
 #define MAX_LENGTH 100
 #define MAX_LINE 1024
 
-
 typedef struct pers *Position;
-
 typedef struct pers{
-
     char name[MAX_LENGTH];
     char surname[MAX_LENGTH];
     int birth;
     Position next_pos;
-
-
 }_person;
+
 
 int AddStart(Position);
 int AddEnd(Position);
@@ -37,135 +33,113 @@ int ReadDat();
 int ChooseFun(Position);
 
 
-
-
-
-
-int main(){
-
+int main()
+{
     _person Head = {.name = {0}, .surname = {0}, .birth = 0, .next_pos = 0};
     Head.next_pos = NULL;
 
     ChooseFun(&Head);
-  
-
-
 }
 
-int AddStart(Position Pers){
-
+int AddStart(Position Pers)
+{   
     Position newPers = NULL;
     newPers = AddPers(newPers);
 
-    if(newPers!=NULL){
-
+    if(newPers!=NULL)
+    {
         newPers->next_pos = Pers->next_pos;
         Pers->next_pos = newPers; 
-
     }
     return 0;
-
 }
-int AddEnd(Position Pers){
 
+int AddEnd(Position Pers)
+{
     Position newPers = NULL;
     newPers = AddPers(newPers);
 
-    if(Pers->next_pos!=NULL){
-        while(Pers->next_pos !=NULL){
-
+    if(Pers->next_pos!=NULL)
+    {
+        while(Pers->next_pos !=NULL)
+        {    
             Pers = Pers->next_pos;
-
         }
     }
     Pers->next_pos = newPers;
     newPers->next_pos = NULL;
 
     return 0;
-
-
 }
 
-int FindPer(Position Pers, char surname[]){
-
+int FindPer(Position Pers, char surname[])
+{
     int true_false = 0;
 
-    while(Pers->next_pos != NULL){
+    while(Pers->next_pos != NULL)
+    {
         Pers = Pers->next_pos;
-        if(strcmp(Pers->surname, surname) == 0){
+        if(strcmp(Pers->surname, surname) == 0)
+        {
             printf("Trazena osoba se nalazi u polju!\n");
             PrintPers(Pers);
             true_false = 1;
         }
     }
-    if(true_false == 0){
-
+    if(true_false == 0)
         printf("\nTrazena osoba ne nalazi se u polju!\n");
-    }
-
+    
     printf("\n");
 
     return 0;
-
-
-
 }
 
-int PrevPers(Position Pers, char surname[]){
-
+int PrevPers(Position Pers, char surname[])
+{
     Position Prev = NULL;
 
-    while(Pers != NULL && Pers->next_pos != NULL ){
-        if(strcmp((Pers->next_pos)->surname, surname) == 0){
+    while(Pers != NULL && Pers->next_pos != NULL )
+    {
+        if(strcmp((Pers->next_pos)->surname, surname) == 0)
             Prev = Pers;
-        
-            
-        }
 
         Pers = Pers->next_pos;
     }
 
-    if(Prev->birth != 0){
+    if(Prev->birth != 0)
+    {
         PrintPers(Prev);
         return 0;
     }
     
-    else{
+    else
+    {
         printf("Ne postoji prethodnik");
         return -1;
-    }
-    
+    }    
 }
 
-int InputBefore(Position Pers, char surname[]){
-
+int InputBefore(Position Pers, char surname[])
+{
     Position newPers = NULL;
 
     newPers = AddPers(newPers);
 
-
     while(Pers != NULL && Pers->next_pos != NULL){
-        if(strcmp(Pers->next_pos->surname, surname) == 0){
+        if(strcmp(Pers->next_pos->surname, surname) == 0)
+        {
             newPers->next_pos = Pers->next_pos;
             Pers->next_pos = newPers;
             break;
-            
-
         }
-
         Pers = Pers->next_pos;
-
-            
-
-
-
     }
-    return 0;
 
+    return 0;
 }
 
-int InputAfter(Position Pers, char surname[]){
-
+int InputAfter(Position Pers, char surname[])
+{
     Position newPers = NULL;
 
     newPers = AddPers(Pers);
@@ -183,36 +157,32 @@ int InputAfter(Position Pers, char surname[]){
     return 0;
 }
 
-
-
-int DeletePer(Position Pers, char surname[]){
-
+int DeletePer(Position Pers, char surname[])
+{
     Position temp = NULL;
 
-    while(Pers != NULL && Pers->next_pos != NULL ){
-        if(strcmp((Pers->next_pos)->surname, surname) == 0){
+    while(Pers != NULL && Pers->next_pos != NULL )
+    {
+        if(strcmp((Pers->next_pos)->surname, surname) == 0)
+        {   
             temp = Pers->next_pos;
             Pers->next_pos = Pers->next_pos->next_pos;
             free(temp);
-
         }
 
         else
             Pers = Pers->next_pos;
     
     }
-
     return 0;
-
-
-
 }
 
-int DeletePerAll(Position Pers){
-    
+int DeletePerAll(Position Pers)
+{
     Position temp = NULL;
 
-    while(Pers != NULL && Pers->next_pos != NULL){
+    while(Pers != NULL && Pers->next_pos != NULL)
+    {
         temp = Pers->next_pos;
         Pers->next_pos = temp->next_pos;
         free(temp);
@@ -220,38 +190,34 @@ int DeletePerAll(Position Pers){
     }
 
     return 0;
-
-
-
 }
 
 int PrintList(Position Pers){
 
     printf("Osobe su: \n");
 
-    //if(Pers->next_pos != NULL){
+    while(Pers->next_pos != NULL)
+    {
+        Pers = Pers->next_pos;
+        PrintPers(Pers);
+    }
 
-        while(Pers->next_pos != NULL){
-    
-            Pers = Pers->next_pos;
-
-            PrintPers(Pers);
-
-        }
-    //}
     printf("\n");
     
     return 0;
 
 }
 
-
-Position AddPers(Position newPers){
+Position AddPers(Position newPers)
+{
 
     char name[MAX_LENGTH] = {0}, surname[MAX_LENGTH] = {0};
     int birth = 0;
 
     newPers = (Position)malloc(sizeof(_person));
+
+    if(!newPers)
+        return NULL;
 
     printf("Ime, prezime, godina rodenja: ");
     scanf("%s %s %d", name, surname, &birth);
@@ -264,59 +230,50 @@ Position AddPers(Position newPers){
 
 }
 
-int PrintPers(Position Pers){
-
+int PrintPers(Position Pers)
+{
     printf("%s %s %d\n", Pers->name, Pers->surname, Pers->birth);
     
     return 0;
 
 }
 
-
-int InputDat(Position Pers) {
-
+int InputDat(Position Pers) 
+{
     FILE* filePoint = NULL;
 
     filePoint = fopen("people.txt", "w");
 
-    if (!filePoint) {
+    if (!filePoint) 
         return -1;
-    }
-  
-    while (Pers->next_pos != NULL) {
-
-            Pers = Pers->next_pos;
-
-            fprintf(filePoint,"%s %s %d\n", Pers->name, Pers->surname, Pers->birth);
-        
+    
+    while (Pers->next_pos != NULL) 
+    {
+        Pers = Pers->next_pos;
+        fprintf(filePoint,"%s %s %d\n", Pers->name, Pers->surname, Pers->birth);
 
     }
-
 
     fclose(filePoint);
-    
 
     return 0;
 
-
 }
 
-int ReadDat(){
-
+int ReadDat()
+{
     FILE *filePoint;
     _person Pers = {.name = {0},.surname = {0}, .birth = 0, .next_pos = NULL};
     int counter = 0;
     char buffer[MAX_LINE];
-
-    
 
     filePoint = fopen("people.txt", "r");
 
     if(!filePoint)
         return -1;
 
-    while(1){
-
+    while(1)
+    {
         fscanf(filePoint, "%s %s %d", Pers.name, Pers.surname, &Pers.birth);
 
         if(feof(filePoint))
@@ -326,13 +283,11 @@ int ReadDat(){
         
     }
         
-   
     fclose(filePoint);
 
     return 0;
-    
-}
 
+}
 
 int ChooseFun(Position Head){
 
@@ -343,7 +298,6 @@ int ChooseFun(Position Head){
     scanf("%c", &choice);
     
     do{
-
         choice = toupper(choice);
 
         switch(choice){
@@ -367,41 +321,36 @@ int ChooseFun(Position Head){
             break;
 
         case 'F':
-            if(Head->next_pos != NULL){
+            if(Head->next_pos != NULL)
+            {
                 printf("\nUnesite prezime osobe koju trazite: ");
                 scanf("%s", surname);
                 printf("\n");
                 FindPer(Head, surname);
             }
-
-            
             else
                 printf("\nNe postoji nijedan element u listi!\n");
 
             break;
 
         case 'D':
-            if(Head->next_pos != NULL){
+            if(Head->next_pos != NULL)
+            {
                 printf("\nUnesite prezime osobe koju zelite izbrisati: ");
                 scanf("%s", surname);
                 printf("\n");
                 DeletePer(Head, surname);
             }
-
-            
             else
                 printf("\nNe postoji nijedan element u listi!\n");
 
             break;
 
-
         case 'P':
             printf("\nUnesite prezime osobe ciji prethodnik zelite naci: ");
             scanf("%s", surname);
             printf("\n");
-
             PrevPers(Head, surname);
-
             break;
 
         case 'A':
@@ -443,9 +392,6 @@ int ChooseFun(Position Head){
         
     }while(1);
     
-    
-        
-        
     return 0;
-}
 
+}
