@@ -262,7 +262,7 @@ int PrintPol(Element Head)
     Element current = Head->next_pos;
     while(current != NULL)
     {
-        printf(" %dx^%d ",current->coeff, current->pot);
+        printf("%dx^%d  ",current->coeff, current->pot);
         current = current->next_pos;
     }
 
