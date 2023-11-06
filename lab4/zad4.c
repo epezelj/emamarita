@@ -40,7 +40,7 @@ int main()
     printf("\n");
     SumPol(&Head_pol1, &Head_pol2, &Head_sumPol);
     PrintPol(&Head_sumPol);
-    //FreeAll(&Head_pol1, &Head_pol2);
+    FreeAll(&Head_pol1, &Head_pol2);
 
     return 0;
 }
@@ -245,6 +245,7 @@ int FreeAll(Element Head_pol1, Element Head_pol2)
         temp = current_pol1;
         current_pol1 = current_pol1->next_pos;
         free(temp); 
+
     }
     while(current_pol2 != NULL)
     {
