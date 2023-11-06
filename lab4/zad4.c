@@ -25,7 +25,6 @@ int PrintPol(Element);
 
 int main()
 {
-
     _element Head_pol1 = {.coeff = 0, .pot = 0, .next_pos = NULL};
     _element Head_pol2 = {.coeff = 0, .pot = 0, .next_pos = NULL};
     _element Head_multiplyPol = {.coeff = 0, .pot = 0, .next_pos = NULL};
@@ -45,7 +44,6 @@ int main()
 
     return 0;
 }
-
 
 int SumPol(Element Head_pol1, Element Head_pol2, Element Head_sumPol)
 {
