@@ -14,7 +14,8 @@ int ReadFile();
 int PostfixCalc(char *line);
 int Push(Position, int);
 int Pop(Position);
-int Print(Position);
+int PrintStack(Position);
+int Print(char *, Position, float);
 Position AddOperand(Position);
 int Operation(int, int, char);
 
@@ -77,11 +78,7 @@ int PostfixCalc(char *line)
         else 
             return -1;
 
-        printf("Obrađeno: %s", done);
-        Print(&Head);
-        printf("\nResult: %d", (int)result);
-        printf("\n\n");
-        
+        Print(done, &Head, result);
     }
     return 0;
 }
@@ -118,20 +115,6 @@ int Pop(Position Head)
     return -1;
 }
 
-int Print(Position Head)
-{
-    printf("\nStog: ");
-    Position current = Head->next;
-
-    while(current != NULL)
-    {
-        printf("%d ", current->operand);
-        current = current->next;
-    }
-
-    return 0;
-}
-
 int Operation(int operand1, int operand2, char operator)
 {
     float result = 0.0;
@@ -161,6 +144,31 @@ int Operation(int operand1, int operand2, char operator)
 
     return result;
 }
+
+
+int PrintStack(Position Head)
+{
+    printf("\nStog: ");
+    Position current = Head->next;
+
+    while(current != NULL)
+    {
+        printf("%d ", current->operand);
+        current = current->next;
+    }
+
+    return 0;
+}
+
+int Print(char *done, Position Head, float result)
+{
+    printf("Obrađeno: %s", done);
+    PrintStack(Head);
+    printf("\nResult: %d", (int)result);
+    printf("\n\n");
+
+}
+
 
 Position AddOperand(Position New)
 {
