@@ -145,7 +145,6 @@ int Operation(int operand1, int operand2, char operator)
     return result;
 }
 
-
 int PrintStack(Position Head)
 {
     printf("\nStog: ");
@@ -166,9 +165,7 @@ int Print(char *done, Position Head, float result)
     PrintStack(Head);
     printf("\nResult: %d", (int)result);
     printf("\n\n");
-
 }
-
 
 Position AddOperand(Position New)
 {
