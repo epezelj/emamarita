@@ -1,0 +1,170 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_SIZE 1024
+
+typedef struct S *Position;
+typedef struct S{
+    int operand;
+    Position next;
+}stack;
+
+int ReadFile();
+int PostfixCalc(char *line);
+int Push(Position, int);
+int Pop(Position);
+int Print(Position);
+Position AddOperand(Position);
+int Operation(int, int, char);
+
+int main()
+{
+    ReadFile();
+    
+    return 0;
+}
+
+int ReadFile()
+{
+    FILE *filePointer;
+    char line[MAX_SIZE];
+
+    filePointer = fopen("postfix_izraz.txt", "r");
+    if(!filePointer)
+        return -1;
+
+    fgets(line, MAX_SIZE, filePointer);
+    PostfixCalc(line);
+
+    return 0;
+}
+
+int PostfixCalc(char *line)
+{
+    stack Head = {.operand = 0, .next = NULL};
+    char operator = '\0', done[MAX_SIZE]="\0", strOperand[MAX_SIZE] = "\0", strOperator[MAX_SIZE] = "\0";
+    int value = 0, bytes = 0, counter = 0;
+    float operand = 0.0, operand1 = 0.0, operand2 = 0.0, result = 0.0;
+
+    while(strlen(line+bytes)>0)
+    {
+        value = sscanf(line+bytes, "%f %n", &operand, &counter);
+        if(value == 1)
+        {   
+            bytes+= counter;
+            Push(&Head, operand);
+
+            sprintf(strOperand, "%d", (int)operand);
+            strcat(done, strOperand);
+        }
+        else if(value == 0)
+        {
+            value = sscanf(line+bytes, " %c %n", &operator, &counter);
+            bytes+= counter;
+
+            if(value == 1)
+            {
+                sprintf(strOperator, "%c", operator);
+                strcat(done, strOperator);
+
+                operand2 = Pop(&Head);
+                operand1 = Pop(&Head);
+                result = Operation(operand1, operand2, operator);
+                Push(&Head, result);       
+            }
+        }
+        else 
+            return -1;
+
+        printf("Obrađeno: %s", done);
+        Print(&Head);
+        printf("\nResult: %d", (int)result);
+        printf("\n\n");
+        
+    }
+    return 0;
+}
+
+int Push(Position Head, int operand)
+{
+    Position New = NULL;
+    New = AddOperand(New);
+    if(!New)
+        return -1;
+
+    New->operand = operand;
+    New->next = Head->next;
+    Head->next = New;
+
+    return 0;
+}
+
+int Pop(Position Head)
+{
+    Position temp = NULL;
+    int operand = 0;
+
+    if(Head->next != NULL)
+    {
+        temp = Head->next;
+        operand = temp->operand;
+        Head->next = Head->next->next;
+        free(temp);
+
+        return operand;
+    }
+
+    return -1;
+}
+
+int Print(Position Head)
+{
+    printf("\nStog: ");
+    Position current = Head->next;
+
+    while(current != NULL)
+    {
+        printf("%d ", current->operand);
+        current = current->next;
+    }
+
+    return 0;
+}
+
+int Operation(int operand1, int operand2, char operator)
+{
+    float result = 0.0;
+
+    switch(operator)
+    {
+        case '+':
+            result = operand1 + operand2;
+            break;
+
+        case '-':
+            result = operand1 - operand2;
+            break;
+
+        case '*':
+            result = operand1 * operand2;
+            break;
+
+        case '/':
+            result = operand1 / operand2;
+            break;
+        
+        default:
+            printf("\nNe postoji!\n");
+            return 0;
+    }
+
+    return result;
+}
+
+Position AddOperand(Position New)
+{
+    New = (Position)malloc(sizeof(stack));
+
+    return New;  
+}
