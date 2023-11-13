@@ -21,8 +21,8 @@ int AddStart(Position);
 int AddEnd(Position);
 int FindPer(Position, char[]);
 int PrevPers(Position, char[]);
-int InputBefore(Position, char[]);
-int InputAfter(Position, char[]);
+int AddBefore(Position, char[]);
+int AddAfter(Position, char[]);
 int DeletePer(Position, char[]);
 int DeletePerAll(Position);
 int PrintList(Position);
@@ -119,7 +119,7 @@ int PrevPers(Position Pers, char surname[])
     }    
 }
 
-int InputBefore(Position Pers, char surname[])
+int AddBefore(Position Pers, char surname[])
 {
     Position newPers = NULL;
 
@@ -138,7 +138,7 @@ int InputBefore(Position Pers, char surname[])
     return 0;
 }
 
-int InputAfter(Position Pers, char surname[])
+int AddAfter(Position Pers, char surname[])
 {
     Position newPers = NULL;
 
@@ -361,7 +361,7 @@ int ChooseFun(Position Head){
             printf("\nUnesite prezime ispred kojeg ce se dodati el: ");
             scanf("%s", surname);
             printf("Surname: %s", surname);
-            InputBefore(Head, surname);
+            AddBefore(Head, surname);
 
             break;
 
@@ -369,7 +369,7 @@ int ChooseFun(Position Head){
             printf("\nUnesite prezime nakon kojeg ce se dodati el: ");
             scanf("%s", surname);
             printf("Surname: %s", surname);
-            InputAfter(Head, surname);
+            AddAfter(Head, surname);
 
             break;
 
