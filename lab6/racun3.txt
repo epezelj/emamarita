@@ -1,0 +1,4 @@
+2023-12-02
+kivi 1 2
+banane 2 4
+sljive 2 3
