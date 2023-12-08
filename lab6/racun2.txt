@@ -1,3 +1,4 @@
 2023-12-02
 banane 3 6
 jabuke 2 3.2
+narance 2 4

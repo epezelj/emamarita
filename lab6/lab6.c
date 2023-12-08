@@ -72,7 +72,7 @@ int ReadReceipt(char receipts[], PositionReceipt HeadReceipt){
     int year = 0, month = 0, day = 0, amount = 0, value = 0, bytes = 0;
     float price = 0.0;
     char article[MAX_LENGTH] = {0}, receipt[MAX_LENGTH];
-    Receipt newReceipt;
+    PositionReceipt newReceipt;
 
     filepointer_receipt = fopen(receipts, "r");
 
@@ -89,7 +89,7 @@ int ReadReceipt(char receipts[], PositionReceipt HeadReceipt){
         if(!newReceipt)
             return -1;
 
-        SortArticles(&newReceipt, article, amount, price);
+        SortArticles(newReceipt, article, amount, price);
 
     }
     if(!feof(filepointer_receipt))

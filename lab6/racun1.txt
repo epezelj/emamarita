@@ -1,3 +1,4 @@
 2023-12-10
 jabuke 5 8
 avokado 1 10
+narance 3 6
