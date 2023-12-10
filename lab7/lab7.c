@@ -38,7 +38,7 @@ int main(){
     Stack StackHead = {.currentDirectory = NULL, .nextStack = NULL};
     PositionStack newStack = (PositionStack)malloc(sizeof(Stack));
 
-    newStack->currentDirectory =&DirectoryHead;
+    newStack->currentDirectory = &DirectoryHead;
     newStack->nextStack = NULL;
     
     (&StackHead)->nextStack  = newStack;
@@ -98,11 +98,9 @@ int ChooseCommand(PositionDirectory DirectoryHead, PositionStack StackHead){
             default:
                 printf("Greska");
                 break;
- 
         }
     }
     return 0;
-
 }
 
 int MakeDirectory(PositionDirectory DirectoryHead, PositionStack StackHead, char *name){
@@ -121,18 +119,17 @@ int MakeDirectory(PositionDirectory DirectoryHead, PositionStack StackHead, char
     if(currentDirectory->subDirectory == NULL)
         currentDirectory->subDirectory = newDirectory;
         
-    else{
-        
+    else
+    {
         currentDirectory = currentDirectory->subDirectory;
         while(currentDirectory->nextDirectory != NULL && strcmp(currentDirectory->name, name) != 0)
             currentDirectory = currentDirectory->nextDirectory;
         
         newDirectory->nextDirectory = currentDirectory->nextDirectory;
-        currentDirectory->nextDirectory = newDirectory;
-        
+        currentDirectory->nextDirectory = newDirectory;    
     }
     return 0;
-
+    
 }
 
 int ChangeDirectory(PositionDirectory Directory, PositionStack StackHead, char *name){
