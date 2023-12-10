@@ -4,7 +4,6 @@
 
 #define MAX_LENGTH 1024
 
-
 typedef struct _directory *PositionDirectory;
 typedef struct _directory{
 
@@ -21,7 +20,6 @@ typedef struct _stack{
     PositionStack nextStack;
 
 }Stack;
-
 
 int ChooseCommand(PositionDirectory DirectoryHead, PositionStack StackHead);
 int MakeDirectory(PositionDirectory DirectoryHead, PositionStack StackHead, char *name);
@@ -129,7 +127,7 @@ int MakeDirectory(PositionDirectory DirectoryHead, PositionStack StackHead, char
         currentDirectory->nextDirectory = newDirectory;    
     }
     return 0;
-    
+
 }
 
 int ChangeDirectory(PositionDirectory Directory, PositionStack StackHead, char *name){
