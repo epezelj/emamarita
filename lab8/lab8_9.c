@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
+
+#define MAX_LENGTH 1024
 
 typedef struct _binaryTree *Position;
 typedef struct _binaryTree{
@@ -11,6 +14,7 @@ typedef struct _binaryTree{
 
 }binaryTree;
 
+
 int Choose(Position root);
 Position Insert(Position root, int number);
 Position AddNumber(int number);
@@ -20,32 +24,38 @@ Position Postorder(Position root);
 Position Levelorder(Position root);
 Position DeleteNumber(Position root, int number);
 bool FindNumber(Position root, int number);
+int Replace(Position root);
+int RandomNumber();
+Position InorderFile(Position root, FILE *filepointer);
+int FileWrite(Position root);
 
 
 
 int main(){
 
-    binaryTree root = {.number = 0, .left = NULL, .right = NULL};
+   Position root = (Position)malloc(sizeof(binaryTree));
+   root->left = NULL;
+   root->right = NULL;
 
-    Choose(&root);
+    Choose(root);
 }
 
 int Choose(Position root){
 
-    int number = 0, choice = 0, check = 0;
+    int number = 0, choice = 0, check = 0, check2 = 0, randNumber = 0;
     Position check_address;
+    srand(time(0));
     
      while(1)
     {
-        printf("Izaberite:\n1-insert number\n2-preorder\n3-inorder\n4-postorder\n5-level order\n6-delete element\n7-find element\n");
+        printf("Izaberite:\n1-insert number\n2-preorder\n3-inorder\n4-postorder\n5-level order\n6-delete element\n7-find element\n8-replace\n9-random\n");
         scanf("%d", &choice);
 
         if(choice == 1)
         {
             printf("Unesite broj: ");
             scanf("%d", &number);
-
-            if(check == 0)
+            if (check == 0)
             {
                 root->number = number;
                 check = 1;
@@ -55,7 +65,8 @@ int Choose(Position root){
                 check_address = Insert(root, number);
                 if(check_address != root)
                     return -1;
-            }
+
+            } 
         }
 
         if(choice == 2)
@@ -67,8 +78,10 @@ int Choose(Position root){
                     return -1;
 
             printf("\n");
+
         }
             
+
         if(choice == 3)
         {
             printf("Inorder: ");
@@ -78,6 +91,7 @@ int Choose(Position root){
                     return -1;
 
             printf("\n");
+            FileWrite(root);
         }
 
         if(choice == 4)
@@ -120,6 +134,35 @@ int Choose(Position root){
                 printf("Broj %d ne nalazi se u stablu\n", number);
     
         }
+        if(choice == 8)
+        {
+            if(Replace(root) == 0)
+                return -1;
+        }
+
+        if (choice == 9)
+        {
+            if (check2 == 0)
+            {
+                randNumber = RandomNumber();
+                if(!randNumber)
+                    return -1;
+                root->number = randNumber;
+                check2 = 1;
+            }
+            else
+            {
+                randNumber = RandomNumber();
+                if(!randNumber)
+                    return -1;
+
+                check_address = Insert(root, randNumber);
+                if(check_address != root)
+                    return -1;
+
+            } 
+    
+        } 
 
     }
 
@@ -129,10 +172,10 @@ Position Insert(Position root, int number){
     if(root == NULL)
         root = AddNumber(number);
 
-    else if(number <= root->number)
+    else if(number < root->number)
         root->left = Insert(root->left, number);
 
-    else if(number > root->number)
+    else if(number >= root->number)
         root->right = Insert(root->right, number);
 
     return root;
@@ -287,4 +330,58 @@ Position DeleteNumber(Position root, int number){
 
     }
     return root;
+}
+
+int Replace(Position root)
+{
+    int leftchild, rightchild;
+    int rootbefore;
+
+    if (root == NULL)
+        return 0;
+
+    leftchild = Replace(root->left);
+    rightchild = Replace(root->right);
+    
+    rootbefore = root->number;
+
+    root->number = leftchild + rightchild;
+
+    return rootbefore + root->number;
+
+
+}
+int RandomNumber()
+{
+    return rand()%79 + 11;
+}
+
+Position InorderFile(Position root, FILE *filepointer){
+
+    if(root != NULL)
+    {
+        InorderFile(root->left, filepointer);
+        fprintf(filepointer, "%d ", root->number);
+        InorderFile(root->right, filepointer);
+    }
+
+    return root;
+
+}
+
+int FileWrite(Position root)
+{
+    FILE *filepointer = NULL;
+    char buffer[MAX_LENGTH];
+    
+    filepointer = fopen("Inorder.txt", "a");
+
+    if(!filepointer)
+        return -1;
+
+    InorderFile(root, filepointer);
+    fprintf(filepointer, "\n", root->number);
+
+    fclose(filepointer);
+
 }
