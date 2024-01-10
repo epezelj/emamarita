@@ -14,6 +14,14 @@ typedef struct _binaryTree{
 
 }binaryTree;
 
+typedef struct _queue *Pos;
+typedef struct _queue{
+
+    Position node;
+    Pos next;
+
+}queue;
+
 
 int Choose(Position root);
 Position Insert(Position root, int number);
@@ -21,7 +29,9 @@ Position AddNumber(int number);
 Position Preorder(Position root);
 Position Inorder(Position root);
 Position Postorder(Position root);
-Position Levelorder(Position root);
+Position Levelorder(Position root, Pos HeadQueue);
+int AddEndElQueue(Pos HeadQueue, Position nodeAddress);
+Position DeleteFirstElQueue(Pos HeadQueue);
 Position DeleteNumber(Position root, int number);
 bool FindNumber(Position root, int number);
 int Replace(Position root);
@@ -107,8 +117,9 @@ int Choose(Position root){
 
         if(choice == 5)
         {
+            queue HeadQueue ={.next = NULL, .node = NULL};
             printf("Levelorder: ");
-            Levelorder(root);
+            Levelorder(root, &HeadQueue);
 
             printf("\n");
         }
@@ -229,30 +240,66 @@ Position Postorder(Position root){
 
 }
 
-Position Levelorder(Position root){
+Position Levelorder(Position root, Pos HeadQueue){
 
     if(root == NULL)
         return 0;
 
-    Position queue[1000];
-    int currPos = 0, queueSize = 0;
-
-    queue[queueSize++] = root;
-
-    while(currPos != queueSize)
+    AddEndElQueue(HeadQueue, root);
+  
+    while(1)
     {
-        Position current = queue[currPos++];
+        Position current = DeleteFirstElQueue(HeadQueue);
 
-        printf(" %d ", current->number);
+        if(current != NULL)
+        {
+            printf(" %d ", current->number);
 
-        if(current->left  != NULL)
-            queue[queueSize++] = current->left;
+            if(current->left  != NULL)
+                AddEndElQueue(HeadQueue, current->left);
 
-        if(current->right != NULL)
-            queue[queueSize++] = current->right;
-
+            if(current->right != NULL)
+                AddEndElQueue(HeadQueue, current->right);;
+        }
+        else
+            return 0;
     }
+}
+
+int AddEndElQueue(Pos HeadQueue, Position nodeAddress){
+
+    Pos newEl = (Pos)malloc(sizeof(queue));
+    Pos currentEl = HeadQueue;
+
+    newEl->next = NULL;
+    newEl->node = nodeAddress;
+
+    while(currentEl->next != NULL)
+        currentEl = currentEl->next;
+
+    newEl->next = currentEl->next;
+    currentEl->next = newEl;
+
     return 0;
+
+}
+
+Position DeleteFirstElQueue(Pos HeadQueue){
+
+    Pos toDelteEl = HeadQueue->next;
+    Position todeleteNode;
+
+    if(HeadQueue->next != NULL)
+    {
+        todeleteNode = toDelteEl->node;
+        HeadQueue->next = toDelteEl->next;
+        free(toDelteEl);
+        return todeleteNode;
+    }
+    
+    else
+        return NULL;
+
 }
 
 bool FindNumber(Position root, int number){
