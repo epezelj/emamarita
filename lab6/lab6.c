@@ -72,7 +72,7 @@ int ReadReceipt(char receipts[], PositionReceipt HeadReceipt){
     int year = 0, month = 0, day = 0, weight = 0, value = 0, bytes = 0;
     float price = 0.0;
     char article[MAX_LENGTH] = {0}, receipt[MAX_LENGTH];
-    PositionReceipt newReceipteipt = NULL;
+    PositionReceipt newReceipt = NULL;
 
     filepointer_receipt = fopen(receipts, "r");
 
@@ -81,47 +81,47 @@ int ReadReceipt(char receipts[], PositionReceipt HeadReceipt){
 
     fscanf(filepointer_receipt, "%d-%d-%d", &year, &month, &day);
     //printf("\n%d-%d-%d\n", year, month, day);
-    newReceipteipt = CreateReceipt(newReceipteipt, year, month, day);
+    newReceipt = CreateReceipt(newReceipt, year, month, day);
     
-    if(!newReceipteipt)
+    if(!newReceipt)
         return -1;
 
     while(fscanf(filepointer_receipt, "%s %d %f", article, &weight, &price) == 3)
     {
         //printf("%s %d %.1f\n",article, weight, price);
-        SortArticles(newReceipteipt, article, weight, price);
+        SortArticles(newReceipt, article, weight, price);
 
     }
     if(!feof(filepointer_receipt))
         return -1;
         
-    SortReceipts(HeadReceipt, newReceipteipt);
+    SortReceipts(HeadReceipt, newReceipt);
     
 
     fclose(filepointer_receipt);
 }
 
-PositionReceipt CreateReceipt(PositionReceipt newReceipteipt, int year, int month, int day){
+PositionReceipt CreateReceipt(PositionReceipt newReceipt, int year, int month, int day){
 
-    newReceipteipt = (PositionReceipt)malloc(sizeof(Receipt));
+    newReceipt = (PositionReceipt)malloc(sizeof(Receipt));
 
-    if(!newReceipteipt)
+    if(!newReceipt)
         return NULL;
 
-    newReceipteipt->year = year;
-    newReceipteipt->month = month;
-    newReceipteipt->day = day;
-    newReceipteipt->nextReceipt = NULL;
-    newReceipteipt->ArticleHead.nextArticle = NULL;
+    newReceipt->year = year;
+    newReceipt->month = month;
+    newReceipt->day = day;
+    newReceipt->nextReceipt = NULL;
+    newReceipt->ArticleHead.nextArticle = NULL;
 
-    return newReceipteipt;
+    return newReceipt;
 
 }
 
-int SortArticles(PositionReceipt newReceipteipt, char article[], int weight, float price){
+int SortArticles(PositionReceipt newReceipt, char article[], int weight, float price){
 
     PositionArticle newArticle = (PositionArticle)malloc(sizeof(Article));
-    PositionArticle currentArticle = &(newReceipteipt->ArticleHead);
+    PositionArticle currentArticle = &(newReceipt->ArticleHead);
 
     if(!newArticle)
         return -1;  
@@ -153,49 +153,49 @@ int ArticleSum(PositionArticle currentArticle, PositionArticle newArticle){
     return 0;
 }
 
-int SortReceipts(PositionReceipt HeadReceipt, PositionReceipt newReceipteipt){
+int SortReceipts(PositionReceipt HeadReceipt, PositionReceipt newReceipt){
 
     PositionReceipt currentReceipt = HeadReceipt;
 
-    while(currentReceipt->nextReceipt != NULL && DateSort(currentReceipt->nextReceipt, newReceipteipt) == 2)
+    while(currentReceipt->nextReceipt != NULL && DateSort(currentReceipt->nextReceipt, newReceipt) == 2)
         currentReceipt = currentReceipt->nextReceipt;
     
-    if(currentReceipt->nextReceipt != NULL && DateSort(currentReceipt->nextReceipt, newReceipteipt) == 3)
+    if(currentReceipt->nextReceipt != NULL && DateSort(currentReceipt->nextReceipt, newReceipt) == 3)
     {
-        ArticleMerge(currentReceipt->nextReceipt, newReceipteipt);
+        ArticleMerge(currentReceipt->nextReceipt, newReceipt);
     }
     else
     {
-        newReceipteipt->nextReceipt = currentReceipt->nextReceipt;
-        currentReceipt->nextReceipt = newReceipteipt;
+        newReceipt->nextReceipt = currentReceipt->nextReceipt;
+        currentReceipt->nextReceipt = newReceipt;
     }
 
     return 0;
 
 }
 
-int DateSort(PositionReceipt currentReceipt, PositionReceipt newReceipteipt){
+int DateSort(PositionReceipt currentReceipt, PositionReceipt newReceipt){
 
-    if(currentReceipt->year > newReceipteipt->year)
+    if(currentReceipt->year > newReceipt->year)
         return 1;
 
-    if(currentReceipt->year < newReceipteipt->year)
+    if(currentReceipt->year < newReceipt->year)
         return 2;
     
     else 
     {
-        if(currentReceipt->month > newReceipteipt->month)
+        if(currentReceipt->month > newReceipt->month)
             return 1;
 
-        if(currentReceipt->month < newReceipteipt->month)
+        if(currentReceipt->month < newReceipt->month)
             return 2;
 
         else{
             
-            if(currentReceipt->day > newReceipteipt->day)
+            if(currentReceipt->day > newReceipt->day)
                 return 1;
             
-            if(currentReceipt->day < newReceipteipt->day)
+            if(currentReceipt->day < newReceipt->day)
                 return 2;
             
             else 

@@ -17,7 +17,7 @@ int MultiplyPol(Element, Element, Element);
 int ReadFile(Element, Element);
 int Seperate(char *, Element);
 Element AddEl(Element, int, int);
-int InputSort(Element, Element);
+int InsertSort(Element, Element);
 int AddEnd(Element, Element);
 int DeleteEl(Element);
 int FreeAll(Element, Element);
@@ -164,13 +164,13 @@ Element AddEl(Element Head, int coeff, int pot)
     newElement->coeff = coeff;
     newElement->pot = pot;
 
-    InputSort(Head, newElement);
+    InsertSort(Head, newElement);
 
     return newElement;
 }
 
 
-int InputSort(Element Head, Element newElement)
+int InsertSort(Element Head, Element newElement)
 {
     Element current = Head;
 
