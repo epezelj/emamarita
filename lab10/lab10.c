@@ -48,9 +48,6 @@ countryPosition FindCountry2(countryPosition countryRoot, char *countryName, dou
 int CityPopulation2(cityPosition cityHead, double population);
 
 
-
-
-
 int main(){
 
     country countryHead = {.countryName = {0}, .nextCountry = NULL, .cityRoot = NULL, .cityHead = NULL, .left = NULL, .right = NULL};
@@ -403,16 +400,5 @@ int CityPopulation2(cityPosition cityHead, double population){
     }
         
 }
-
-
-
-
-
-
-
-
-
-    
-
 
 
