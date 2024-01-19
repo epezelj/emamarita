@@ -40,12 +40,17 @@ int InsertSortList(countryPosition listHead, countryPosition newCity);
 int InsertSortList2(cityPosition listHead, char *cityName, double population);
 int PrintCountry(countryPosition countryHead);
 countryPosition CountryInorder(countryPosition countryRoot);
+int FreeCountry(countryPosition countryHead);
+int FreeCity(cityPosition cityRoot);
 cityPosition CityInorder(cityPosition cityRoot);
 int PrintCity(cityPosition cityHead);
 cityPosition CityPopulation(cityPosition cityRoot, double population);
 int FindCountry(countryPosition countryHead, char *countryName, double population);
 countryPosition FindCountry2(countryPosition countryRoot, char *countryName, double population);
 int CityPopulation2(cityPosition cityHead, double population);
+
+
+
 
 
 int main(){
@@ -91,9 +96,9 @@ int ReadFilecountry(countryPosition countryHead){
 
         countryFilepointer = fopen(countryNameFile, "r");
         
-        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2) 
+        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2) // %50[^,] čita dok ne naiđe na zarez, radi samo za str, učitat str i pretvorit u int, float, double
         {
-            population = atof(strPopulation); 
+            population = atof(strPopulation); // pretvara str u float, double, int (atoi)
 
             if(newCountry->cityRoot == NULL)
             {
@@ -168,7 +173,7 @@ countryPosition CreateListNode(char *countryName){
     if (!newCity)
         return NULL;
 
-    strcpy(newCity->countryName, countryName); 
+    strcpy(newCity->countryName, countryName);  // Pripazi, koristi strcpy!
     newCity->nextCountry = NULL;
     newCity->cityHead = NULL;
     newCity->cityRoot = NULL;
@@ -185,7 +190,7 @@ cityPosition CreateListNode2(char *cityName, int population){
     if (!newCity)
         return NULL;
 
-    strcpy(newCity->cityName, cityName); 
+    strcpy(newCity->cityName, cityName);  // Pripazi, koristi strcpy!
     newCity->nextCity = NULL;
     newCity->population = population;
     newCity->left = NULL;
@@ -320,6 +325,34 @@ cityPosition CityInorder(cityPosition cityRoot){
     CityInorder(cityRoot->right);
 }
 
+// int FreeCountry(countryPosition countryHead){
+
+//     countryPosition currentCountry = countryHead;
+//     countryPosition temp;
+
+//     while(currentCountry->nextCountry != NULL)
+//     {
+//         temp = currentCountry->nextCountry;
+//         FreeCity(currentCountry->nextCountry->cityRoot);
+//         currentCountry->nextCountry = currentCountry->nextCountry->nextCountry;
+//         free(temp);
+//     }
+
+// }
+
+// int FreeCity(cityPosition cityRoot){
+
+//     if(cityRoot == NULL)
+//         return 0;
+
+//     FreeCity(cityRoot->left);
+//     FreeCity(cityRoot->right);
+
+//     free(cityRoot);   
+
+
+//}
+
 countryPosition CountryInorder(countryPosition countryRoot){
 
     if(countryRoot == NULL)
@@ -394,11 +427,23 @@ int CityPopulation2(cityPosition cityHead, double population){
     while(currentCity != NULL)
     {
         if(currentCity->population > population)
-            printf("\n%s\n", currentCity->cityName);
+        printf("\n%s\n", currentCity->cityName);
 
         currentCity = currentCity->nextCity;
+        
+    
+
     }
         
 }
+
+
+
+
+
+
+
+    
+
 
 
