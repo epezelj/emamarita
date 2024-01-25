@@ -38,6 +38,7 @@ int Replace(Position root);
 int RandomNumber();
 Position InorderFile(Position root, FILE *filepointer);
 int FileWrite(Position root);
+Position FreeAll(Position root);
 
 
 
@@ -48,6 +49,19 @@ int main(){
    root->right = NULL;
 
     Choose(root);
+    FreeAll(root);
+}
+
+Position FreeAll(Position root){
+
+    if(root == NULL)
+        return root;
+    
+    FreeAll(root->left);
+    FreeAll(root->right);
+
+    free(root);
+
 }
 
 int Choose(Position root){
@@ -173,7 +187,9 @@ int Choose(Position root){
 
             } 
     
-        } 
+        }
+        if(choice == 10)
+            return 0; 
 
     }
 
@@ -427,7 +443,7 @@ int FileWrite(Position root)
         return -1;
 
     InorderFile(root, filepointer);
-    fprintf(filepointer, "\n", root->number);
+    fprintf(filepointer,"\n%d", root->number);
 
     fclose(filepointer);
 

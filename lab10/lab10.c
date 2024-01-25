@@ -42,6 +42,8 @@ int PrintCountry(countryPosition countryHead);
 countryPosition CountryInorder(countryPosition countryRoot);
 int FreeCountry(countryPosition countryHead);
 int FreeCity(cityPosition cityRoot);
+int FreeCountry2(countryPosition countryRoot);
+int FreeCity2(cityPosition cityhHead);
 cityPosition CityInorder(cityPosition cityRoot);
 int PrintCity(cityPosition cityHead);
 cityPosition CityPopulation(cityPosition cityRoot, double population);
@@ -56,21 +58,33 @@ int CityPopulation2(cityPosition cityHead, double population);
 int main(){
 
     country countryHead = {.countryName = {0}, .nextCountry = NULL, .cityRoot = NULL, .cityHead = NULL, .left = NULL, .right = NULL};
-    country countryRoot = {.countryName = {0}, .nextCountry = NULL, .cityRoot = NULL, .cityHead = NULL, .left = NULL, .right = NULL};
+    countryPosition countryRoot = (countryPosition)malloc(sizeof(country));
     char countryName[MAX_SIZE] = {0};
     double population = 0;
 
+    if(!countryRoot)
+        return -1;
+    countryRoot->cityHead = NULL;
+    countryRoot->cityRoot = NULL;
+    strcpy(countryRoot->countryName, "\0");
+    countryRoot->left = NULL;
+    countryRoot->right = NULL;
+    countryRoot->nextCountry = NULL;
+
     ReadFilecountry(&countryHead);
     PrintCountry(&countryHead);
-    FreeCountry(&countryHead);
-    ReadFilecountry2(&countryRoot);
-    CountryInorder(&countryRoot);
+    ReadFilecountry2(countryRoot);
+    CountryInorder(countryRoot);
 
     printf("\nDržava, broj stanovnika: ");
     scanf("%s %lf", countryName, &population);
     FindCountry(&countryHead, countryName, population); 
 
-    FindCountry2(&countryRoot, countryName, population); 
+    FindCountry2(countryRoot, countryName, population);
+
+    FreeCountry(&countryHead);
+    FreeCountry2(countryRoot);
+
 
 }
 
@@ -349,6 +363,35 @@ int FreeCity(cityPosition cityRoot){
 
     free(cityRoot);   
 
+
+}
+
+int FreeCountry2(countryPosition countryRoot){
+
+    if (countryRoot == NULL)
+        return 0;
+    
+    FreeCountry2(countryRoot->left);
+    FreeCountry2(countryRoot->right);
+
+    FreeCity2(countryRoot->cityHead);
+    free(countryRoot);
+
+
+}
+
+int FreeCity2(cityPosition cityhHead){
+
+    cityPosition currentCity = cityhHead;
+    cityPosition temp;
+
+    while(currentCity->nextCity != NULL)
+    {
+        temp = currentCity->nextCity;
+        currentCity->nextCity = currentCity->nextCity->nextCity;
+        free(temp);
+
+    }
 
 }
 
