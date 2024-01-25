@@ -62,7 +62,7 @@ int main(){
 
     ReadFilecountry(&countryHead);
     PrintCountry(&countryHead);
-    //FreeCountry(&countryHead);
+    FreeCountry(&countryHead);
     ReadFilecountry2(&countryRoot);
     CountryInorder(&countryRoot);
 
@@ -96,9 +96,9 @@ int ReadFilecountry(countryPosition countryHead){
 
         countryFilepointer = fopen(countryNameFile, "r");
         
-        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2) // %50[^,] čita dok ne naiđe na zarez, radi samo za str, učitat str i pretvorit u int, float, double
+        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2)
         {
-            population = atof(strPopulation); // pretvara str u float, double, int (atoi)
+            population = atof(strPopulation); // pretvara str u float, double, int
 
             if(newCountry->cityRoot == NULL)
             {
@@ -149,9 +149,8 @@ int ReadFilecountry2(countryPosition countryRoot){
         countryFilepointer = fopen(countryNameFile, "r");
     
     
-        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2);
+        while(fscanf(countryFilepointer, "%50[^,]%*c%s%*c", cityName, strPopulation) == 2)
         {
-            fscanf(countryFilepointer, "%s %s", cityName, strPopulation);
             population = atof(strPopulation);
 
             if(InsertSortList2(newCountry->cityHead, cityName, population) != 0)
@@ -173,7 +172,7 @@ countryPosition CreateListNode(char *countryName){
     if (!newCity)
         return NULL;
 
-    strcpy(newCity->countryName, countryName);  // Pripazi, koristi strcpy!
+    strcpy(newCity->countryName, countryName);
     newCity->nextCountry = NULL;
     newCity->cityHead = NULL;
     newCity->cityRoot = NULL;
@@ -325,33 +324,33 @@ cityPosition CityInorder(cityPosition cityRoot){
     CityInorder(cityRoot->right);
 }
 
-// int FreeCountry(countryPosition countryHead){
+int FreeCountry(countryPosition countryHead){
 
-//     countryPosition currentCountry = countryHead;
-//     countryPosition temp;
+    countryPosition currentCountry = countryHead;
+    countryPosition temp;
 
-//     while(currentCountry->nextCountry != NULL)
-//     {
-//         temp = currentCountry->nextCountry;
-//         FreeCity(currentCountry->nextCountry->cityRoot);
-//         currentCountry->nextCountry = currentCountry->nextCountry->nextCountry;
-//         free(temp);
-//     }
+    while(currentCountry->nextCountry != NULL)
+    {
+        temp = currentCountry->nextCountry;
+        FreeCity(currentCountry->nextCountry->cityRoot);
+        currentCountry->nextCountry = currentCountry->nextCountry->nextCountry;
+        free(temp);
+    }
 
-// }
+}
 
-// int FreeCity(cityPosition cityRoot){
+int FreeCity(cityPosition cityRoot){
 
-//     if(cityRoot == NULL)
-//         return 0;
+    if(cityRoot == NULL)
+        return 0;
 
-//     FreeCity(cityRoot->left);
-//     FreeCity(cityRoot->right);
+    FreeCity(cityRoot->left);
+    FreeCity(cityRoot->right);
 
-//     free(cityRoot);   
+    free(cityRoot);   
 
 
-//}
+}
 
 countryPosition CountryInorder(countryPosition countryRoot){
 
@@ -373,7 +372,7 @@ int PrintCity(cityPosition cityHead){
 
     while(currentCity != NULL)
     {
-        printf("%s\n", currentCity->cityName);
+        printf(" - %s\n", currentCity->cityName);
         currentCity = currentCity->nextCity;
 
     }
@@ -414,7 +413,7 @@ countryPosition FindCountry2(countryPosition countryRoot, char *countryName, dou
     FindCountry2(countryRoot->left, countryName, population);
     if(strcmp(countryRoot->countryName, countryName) == 0)
     {
-       printf("-%s\n", countryRoot->countryName); 
+       printf("%s\n", countryRoot->countryName); 
        CityPopulation2(countryRoot->cityHead, population);
     }   
     FindCountry2(countryRoot->right, countryName, population);
@@ -427,7 +426,7 @@ int CityPopulation2(cityPosition cityHead, double population){
     while(currentCity != NULL)
     {
         if(currentCity->population > population)
-        printf("\n%s\n", currentCity->cityName);
+        printf("%s\n", currentCity->cityName);
 
         currentCity = currentCity->nextCity;
         

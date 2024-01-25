@@ -58,13 +58,16 @@ int main(){
 
     countryPosition hash = (countryPosition)malloc(sizeof(countryPosition) * 11);
 
+    if(!hash)
+        return -1;
+
     ReadFilecountry(&countryHead);
 
 }
 
 Hash CreateHash(){
 
-    Hash hash;
+    Hash hash = {.nextHashEl = NULL};
 
     for(int i=0; i< HASH_SIZE; i++)
         hash.nextHashEl[i] = NULL;
@@ -93,11 +96,8 @@ int InsertCountryHash(Hash *hash, countryPosition newCountry, int key){
         hash->nextHashEl[key] = newCountry;
 
     else
-    {
         InsertSortList(hash->nextHashEl[key], newCountry);
-    
 
-    }
     return 0;
 
 }
@@ -125,10 +125,10 @@ int ReadFilecountry(countryPosition countryHead){
     FILE *countryFilepointer = NULL;
     char countryName[MAX_SIZE] = {0}, countryNameFile[MAX_SIZE] = {0}, cityName[MAX_SIZE] = {0}, strPopulation[MAX_SIZE]= {0};
     double population = 0;
-    countryPosition newCountry;
-    city cityRoot;
+    countryPosition newCountry = NULL;
+    city cityRoot = {.cityName = {0}, .nextCity = NULL, .population = 0, .left = NULL, .right = NULL};
     int key = 0;
-    Hash hash;
+    Hash hash = {.nextHashEl = NULL};
     
     hash = CreateHash();
 
@@ -182,7 +182,7 @@ countryPosition CreateListNode(char *countryName){
     if (!newCity)
         return NULL;
 
-    strcpy(newCity->countryName, countryName);  // Pripazi, koristi strcpy!
+    strcpy(newCity->countryName, countryName);
     newCity->nextCountry = NULL;
     newCity->cityHead = NULL;
     newCity->cityRoot = NULL;
@@ -269,17 +269,5 @@ cityPosition CityInorder(cityPosition cityRoot){
     printf("- %s\n", cityRoot->cityName);
     CityInorder(cityRoot->right);
 }
-
-
-
-
-
-
-
-
-
-
-    
-
 
 
